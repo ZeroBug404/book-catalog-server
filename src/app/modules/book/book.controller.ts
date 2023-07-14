@@ -59,6 +59,23 @@ const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
     }
   };
 
+  const updateBook = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id;
+
+      const updatedData = req.body;
+
+      const result = await BookService.updateBook(id, updatedData);
+
+      res.status(200).json({
+        success: true,
+        message: 'Book updated successfully',
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   const deleteBook = async (req: Request, res: Response, next: NextFunction) => {
     try {
