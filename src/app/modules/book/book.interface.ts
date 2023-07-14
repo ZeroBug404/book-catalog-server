@@ -1,8 +1,12 @@
 export type IBook = {
-  id: string;
+  // id?: string;
   title: string;
   author: string;
   genre: string;
-  publicationDate: Date;
+  publicationDate: string;
   reviews: string[];
 };
+
+export type IBookFilters = {
+  searchTerm?: string;
+}

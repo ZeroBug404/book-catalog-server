@@ -1,13 +1,9 @@
-import { IBook } from "./book.interface";
+import { paginationHelpers } from "../../../helpers/paginationHelper";
+import { IGenericResponse } from "../../../interfaces/common";
+import { IPaginationOptions } from "../../../interfaces/pagination";
+import { bookSearchableFields } from "./book.constant";
+import { IBook, IBookFilters } from "./book.interface";
 import { Book } from "./book.model";
-// import ApiError from '../../../errors/ApiError';
-// import { paginationHelpers } from '../../../helpers/paginationHelper';
-// import { IGenericResponse } from '../../../interfaces/common';
-// import { IPaginationOptions } from '../../../interfaces/pagination';
-// import { cowSearchableFields } from './cow.constant';
-// import { ICow, ICowFilters } from './cow.interface';
-// import { Cow } from './cow.model';
-// import { generatedCowId } from './cow.utils';
 
 const createBook = async (book: IBook): Promise<IBook | null> => {
   const createBook = await Book.create(book);
@@ -17,84 +13,79 @@ const createBook = async (book: IBook): Promise<IBook | null> => {
   return createBook;
 };
 
-// const getAllCows = async (
-//   filters: ICowFilters,
-//   paginationOptions: IPaginationOptions
-// ): Promise<IGenericResponse<ICow[]>> => {
-//   const { searchTerm, ...filtersData } = filters;
+const getAllBooks = async (
+  filters: IBookFilters,
+  paginationOptions: IPaginationOptions
+): Promise<IGenericResponse<IBook[]>> => {
+  const { searchTerm, ...filtersData } = filters;
 
-//   const addConditions = [];
+  const addConditions = [];
 
-//   if (searchTerm) {
-//     addConditions.push({
-//       $or: cowSearchableFields.map(field => ({
-//         [field]: {
-//           $regex: searchTerm,
-//           $options: 'i',
-//         },
-//       })),
-//     });
-//   }
+  if (searchTerm) {
+    addConditions.push({
+      $or: bookSearchableFields.map((field) => ({
+        [field]: {
+          $regex: searchTerm,
+          $options: "i",
+        },
+      })),
+    });
+  }
 
-//   if (Object.keys(filtersData).length) {
-//     addConditions.push({
-//       $and: Object.entries(filtersData).map(([field, value]) => ({
-//         [field]: value,
-//       })),
-//     });
-//   }
+  if (Object.keys(filtersData).length) {
+    addConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => ({
+        [field]: value,
+      })),
+    });
+  }
 
-//   const { page, limit, skip, sortBy, sortOrder } =
-//     paginationHelpers.calculatePagination(paginationOptions);
+  const { page, limit, skip } =
+    paginationHelpers.calculatePagination(paginationOptions);
 
-//   const sortConditions: { [key: string]: SortOrder } = {};
+  const whereCondition = addConditions.length ? { $and: addConditions } : {};
 
-//   if (sortBy && sortOrder) {
-//     sortConditions[sortBy] = sortOrder;
-//   }
+  const result = await Book.find(whereCondition).skip(skip).limit(limit);
 
-//   const whereCondition = addConditions.length ? { $and: addConditions } : {};
+  const total = await Book.countDocuments(whereCondition);
 
-//   const result = await Cow.find(whereCondition)
-//     .sort(sortConditions)
-//     .skip(skip)
-//     .limit(limit);
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
+};
 
-//   const total = await Cow.countDocuments();
+const getSingleBook = async (id: string): Promise<IBook | null> => {
+  const result = await Book.findOne({ _id: id });
 
-//   return {
-//     meta: {
-//       page,
-//       limit,
-//       total,
-//     },
-//     data: result,
-//   };
-// };
+  return result;
+};
 
-// const getSingleCow = async (id: string): Promise<ICow | null> => {
-//   const result = await Cow.findOne({ _id: id });
+const updateBook = async (
+  id: string,
+  payload: Partial<IBook>
+): Promise<IBook | null> => {
+  const result = await Book.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
 
-//   return result;
-// };
+  return result;
+};
 
-// const updateCow = async (
-//   id: string,
-//   payload: Partial<ICow>
-// ): Promise<ICow | null> => {
-//   const result = await Cow.findOneAndUpdate({ _id: id }, payload, {
-//     new: true,
-//   });
+const deleteBook = async (id: string): Promise<IBook | null> => {
+  const result = await Book.findOneAndDelete({ _id: id });
 
-//   return result;
-// };
-
-// const deleteCow = async (id: string): Promise<ICow | null> => {
-//   const result = await Cow.findOneAndDelete({ _id: id });a
-
-//   return result;
-// };
+  return result;
+};
 
 export const BookService = {
   createBook,
+  getAllBooks,
+  getSingleBook,
+  updateBook,
+  deleteBook,
 };

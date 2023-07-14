@@ -3,10 +3,10 @@ import { IBook } from "./book.interface";
 
 const BookSchema = new Schema<IBook>(
   {
-    id: {
-      type: String,
-      unique: true,
-    },
+    // id: {
+    //   type: String,
+    //   unique: true,
+    // },
     title: {
       type: String,
       required: true,
@@ -20,7 +20,7 @@ const BookSchema = new Schema<IBook>(
       required: true,
     },
     publicationDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     reviews: {
