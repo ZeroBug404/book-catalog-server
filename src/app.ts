@@ -1,6 +1,5 @@
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
-// import routes from './app/routes';
 // import cookieParser from 'cookie-parser';
 import routes from "./app/routes/index";
 
