@@ -39,7 +39,42 @@ const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+  const getSingleBook = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const id = req.params.id;
 
+      const result = await BookService.getSingleBook(id);
+
+      res.status(200).json({
+        success: true,
+        message: 'Book retrieved successfully',
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+
+  const deleteBook = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id;
+
+      const result = await BookService.deleteBook(id);
+
+      res.status(200).json({
+        success: true,
+        message: 'Book deleted successfully',
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
 export const BookController = {
   createBook,
