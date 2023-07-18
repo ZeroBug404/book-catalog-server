@@ -15,6 +15,8 @@ router.delete("/:id", BookController.deleteBook);
 
 router.post("/post-reviews/:id", BookController.createReviews);
 
+router.patch("/feature-update/:id", BookController.updateFeature);
+
 router.get("/", BookController.getAllBooks);
 
 export const BookRoutes = router;

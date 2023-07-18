@@ -31,6 +31,18 @@ const BookSchema = new Schema<IBook>(
       type: String,
       required: true,
     },
+    wishlist: {
+      type: Boolean,
+      default: false,
+    },
+    readinglist: {
+      type: Boolean,
+      default: false,
+    },
+    finished: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

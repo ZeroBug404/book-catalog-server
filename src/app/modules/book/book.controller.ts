@@ -94,6 +94,24 @@ const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
     }
   };
 
+  const updateFeature = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = req.params.id;
+
+      const updatedData = req.body;
+
+      const result = await BookService.updateFeature(id, updatedData);
+
+      res.status(200).json({
+        success: true,
+        message: 'Feature updated successfully',
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   const deleteBook = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = req.params.id;
@@ -130,6 +148,7 @@ export const BookController = {
   getAllBooks,
   getSingleBook,
   updateBook,
+  updateFeature,
   deleteBook,
   getLatestBooks
 };

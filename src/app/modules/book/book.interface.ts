@@ -9,6 +9,9 @@ export type IBook = {
   publicationDate: string;
   reviews?: string[];
   userEmail: string;
+  wishlist?: boolean;
+  readinglist?: boolean;
+  finished?: boolean;
 };
 
 export type IBookFilters = {
