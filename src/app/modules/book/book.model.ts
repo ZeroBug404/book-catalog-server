@@ -27,6 +27,10 @@ const BookSchema = new Schema<IBook>(
       type: [String],
       default: [],
     },
+    userEmail: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

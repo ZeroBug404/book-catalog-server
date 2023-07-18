@@ -19,6 +19,23 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const createReviews = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const bookId = req.params.id
+    const review = req.body.reviews;
+
+    const result = await BookService.createReviews(review, bookId);
+
+    res.status(200).json({
+      success: true,
+      message: "Review created successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
   const paginationFields = ["page", "limit", "sortBy", "sortOrder"];
 
@@ -93,10 +110,26 @@ const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
     }
   };
 
+  const getLatestBooks = async (req: Request, res: Response, next: NextFunction) => {  
+    try {
+      const result = await BookService.getLatestBooks();
+
+      res.status(200).json({
+        success: true,
+        message: "latest 10 Books retrieved successfully",
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
 export const BookController = {
   createBook,
+  createReviews,
   getAllBooks,
   getSingleBook,
   updateBook,
-  deleteBook
+  deleteBook,
+  getLatestBooks
 };

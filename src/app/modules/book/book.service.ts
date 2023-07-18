@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
@@ -7,6 +8,20 @@ import { Book } from "./book.model";
 
 const createBook = async (book: IBook): Promise<IBook | null> => {
   const createBook = await Book.create(book);
+  if (!createBook) {
+    throw new Error(`Faild to create book`);
+  }
+  return createBook;
+};
+
+const createReviews = async (
+  review: string,
+  bookId: string
+): Promise<Partial<IBook> | null> => {
+  const createBook = await Book.updateOne(
+    { _id: new mongoose.Types.ObjectId(bookId) },
+    { $push: { reviews: review } }
+  );
   if (!createBook) {
     throw new Error(`Faild to create book`);
   }
@@ -82,10 +97,18 @@ const deleteBook = async (id: string): Promise<IBook | null> => {
   return result;
 };
 
+const getLatestBooks = async (): Promise<IBook[]> => {
+  const result = await Book.find().sort({ createdAt: -1 }).limit(10);
+
+  return result;
+};
+
 export const BookService = {
   createBook,
+  createReviews,
   getAllBooks,
   getSingleBook,
   updateBook,
   deleteBook,
+  getLatestBooks,
 };

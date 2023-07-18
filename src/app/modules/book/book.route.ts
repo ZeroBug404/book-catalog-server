@@ -5,11 +5,15 @@ const router = express.Router();
 
 router.post("/create-book", BookController.createBook);
 
+router.get("/get-latest", BookController.getLatestBooks);
+
 router.get("/:id", BookController.getSingleBook);
 
 router.patch("/:id", BookController.updateBook);
 
 router.delete("/:id", BookController.deleteBook);
+
+router.post("/post-reviews/:id", BookController.createReviews);
 
 router.get("/", BookController.getAllBooks);
 
