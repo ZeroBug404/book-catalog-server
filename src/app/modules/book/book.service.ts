@@ -17,15 +17,15 @@ const createBook = async (book: IBook): Promise<IBook | null> => {
 const createReviews = async (
   review: string,
   bookId: string
-): Promise<Partial<IBook> | null> => {
-  const createBook = await Book.updateOne(
+): Promise<any> => {
+  const createReview = await Book.updateOne(
     { _id: new mongoose.Types.ObjectId(bookId) },
     { $push: { reviews: review } }
   );
-  if (!createBook) {
+  if (!createReview) {
     throw new Error(`Faild to create book`);
   }
-  return createBook;
+  return createReview;
 };
 
 const getAllBooks = async (
