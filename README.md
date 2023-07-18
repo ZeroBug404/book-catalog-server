@@ -1,6 +1,6 @@
 ## API Documentation
 
-Front-end Live Link: [https://64b62850723d8f2b72b9eae1--gorgeous-syrniki-e0b759.netlify.app/](https://64b62850723d8f2b72b9eae1--gorgeous-syrniki-e0b759.netlify.app/)
+Front-end Live Link: [https://gorgeous-syrniki-e0b759.netlify.app/](https://gorgeous-syrniki-e0b759.netlify.app/)
 
 Backend Live Links
 ### User
